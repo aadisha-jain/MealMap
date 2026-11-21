@@ -1,0 +1,85 @@
+:root {
+  --green: #2f855a; --green-dark: #276749; --bg: #f6f8f5; --card: #ffffff;
+  --text: #22302a; --muted: #6b7a72; --danger: #c53030; --border: #e2e8e4;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+       background: var(--bg); color: var(--text); line-height: 1.5; }
+.site-header { text-align: center; padding: 20px 16px 8px; }
+.site-header h1 { margin: 0; color: var(--green-dark); }
+.site-header p { margin: 4px 0 0; color: var(--muted); }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto;
+        justify-content: center; position: sticky; top: 0; background: var(--bg); z-index: 5; }
+.tab { border: 1px solid var(--border); background: var(--card); padding: 8px 18px;
+       border-radius: 999px; cursor: pointer; font-size: 1rem; }
+.tab.active { background: var(--green); color: #fff; border-color: var(--green); }
+
+main { max-width: 760px; margin: 0 auto; padding: 0 16px 24px; }
+.panel { display: none; }
+.panel.active { display: block; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+        padding: 16px; margin-bottom: 14px; }
+.card h2, .card h3 { margin-top: 0; }
+
+/* Forms */
+label { display: block; margin-bottom: 12px; font-weight: 600; }
+input, select { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid var(--border);
+                border-radius: 8px; font-size: 1rem; }
+.inline-form { display: flex; gap: 8px; margin-bottom: 10px; }
+.inline-form input, .inline-form select { margin-top: 0; }
+.btn { background: var(--green); color: #fff; border: 0; padding: 10px 18px;
+       border-radius: 8px; font-size: 1rem; cursor: pointer; }
+.btn:hover { background: var(--green-dark); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+.btn.small { padding: 8px 14px; white-space: nowrap; }
+.btn.secondary { background: #edf2ee; color: var(--text); }
+.icon-btn { background: none; border: 0; color: var(--danger); cursor: pointer; font-size: 1.1rem; }
+
+/* Status messages */
+.status { padding: 10px 12px; border-radius: 8px; margin: 10px 0; background: #ebf4ff; }
+.status.error { background: #fed7d7; color: #742a2a; }
+.status.success { background: #c6f6d5; color: #22543d; }
+.status[hidden] { display: none; }
+.muted, .empty { color: var(--muted); }
+
+/* Meal cards */
+.meal-type { background: #c6f6d5; color: #22543d; border-radius: 999px;
+             padding: 2px 10px; font-size: .8rem; font-weight: 700; }
+.meal-card h3 { margin: 8px 0 4px; }
+.meal-meta { color: var(--muted); margin: 0 0 6px; }
+.meal-ingredients { font-size: .95rem; }
+.plan-total, .tip { font-weight: 600; }
+
+/* Grocery + tracker lists */
+.plain-list { list-style: none; padding: 0; margin: 0; }
+.grocery-row, .plain-list li { display: flex; justify-content: space-between;
+        align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.grocery-row label { margin: 0; font-weight: 400; display: flex; gap: 8px; align-items: center; }
+.grocery-row input { width: auto; margin: 0; }
+.bought { text-decoration: line-through; color: var(--muted); }
+.progress { height: 16px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin: 8px 0 14px; }
+.progress-bar { height: 100%; width: 0; background: var(--green); transition: width .3s; }
+.progress-bar.over { background: var(--danger); }
+
+/* Chat */
+.chat-window { height: 45vh; overflow-y: auto; border: 1px solid var(--border);
+               border-radius: 8px; padding: 10px; margin-bottom: 10px; background: #fafcfa; }
+.bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; margin: 6px 0; white-space: pre-wrap; }
+.bubble.user { background: var(--green); color: #fff; margin-left: auto; }
+.bubble.bot { background: #edf2ee; }
+.bubble.typing { font-style: italic; color: var(--muted); }
+.bubble.error { background: #fed7d7; color: #742a2a; }
+.bubble.system { background: none; color: var(--muted); font-size: .85rem; text-align: center; max-width: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { border: 1px solid var(--green); background: #fff; color: var(--green-dark);
+        border-radius: 999px; padding: 4px 12px; font-size: .85rem; cursor: pointer; }
+
+.disclaimer { text-align: center; font-size: .85rem; color: var(--muted);
+              padding: 16px; max-width: 760px; margin: 0 auto; }
+
+@media (max-width: 480px) {
+  .inline-form { flex-wrap: wrap; }
+  .inline-form input { flex: 1 1 100%; }
+}

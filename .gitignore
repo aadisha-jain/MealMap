@@ -1,0 +1,14 @@
+# Secrets: never upload these to GitHub
+.env
+.env.local
+.env.*.local
+
+# Vercel + Node
+.vercel/
+node_modules/
+
+# OS / editor files
+.DS_Store
+.vscode/
+.vercel
+.env*

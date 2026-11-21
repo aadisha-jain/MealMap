@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MealMap – Smart Meal Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>🍽️ MealMap</h1>
+    <p>Plan meals around your workday, shop smarter, track calories.</p>
+  </header>
+
+  <!-- Navigation: each button shows one section (see app.js) -->
+  <nav class="tabs" aria-label="Main navigation">
+    <button class="tab active" data-target="planner">Planner</button>
+    <button class="tab" data-target="grocery">Grocery</button>
+    <button class="tab" data-target="tracker">Tracker</button>
+    <button class="tab" data-target="chat">Chat</button>
+  </nav>
+
+  <main>
+    <!-- ===== PLANNER ===== -->
+    <section id="planner" class="panel active">
+      <form id="plan-form" class="card">
+        <h2>Your day</h2>
+        <label>Workday type
+          <select id="workday-type">
+            <option value="meeting-heavy">Meeting-heavy</option>
+            <option value="work-from-home">Work from home</option>
+            <option value="long-commute">Long commute</option>
+          </select>
+        </label>
+        <label>Diet preference
+          <select id="diet">
+            <option value="vegetarian">Vegetarian</option>
+            <option value="non-vegetarian">Non-vegetarian</option>
+            <option value="eggetarian">Eggetarian</option>
+          </select>
+        </label>
+        <label>Time available per meal (minutes)
+          <input type="number" id="minutes-per-meal" value="20" min="5" max="120">
+        </label>
+        <label>Daily calorie goal (approx. kcal)
+          <input type="number" id="calorie-goal" value="2000" min="1000" max="5000">
+        </label>
+        <button type="submit" id="plan-button" class="btn">Generate plan</button>
+      </form>
+      <div id="plan-status" class="status" role="status" hidden></div>
+      <div id="plan-result"></div>
+    </section>
+
+    <!-- ===== GROCERY ===== -->
+    <section id="grocery" class="panel">
+      <div class="card">
+        <h2>Grocery checklist</h2>
+        <form id="grocery-form" class="inline-form">
+          <input type="text" id="grocery-name" placeholder="Add an item (e.g. Spinach)">
+          <select id="grocery-category"></select>
+          <button type="submit" class="btn small">Add</button>
+        </form>
+        <div id="grocery-status" class="status" role="status" hidden></div>
+        <p id="grocery-count" class="muted"></p>
+        <div id="grocery-list"></div>
+        <button id="clear-bought" class="btn small secondary">Clear bought items</button>
+      </div>
+    </section>
+
+    <!-- ===== TRACKER ===== -->
+    <section id="tracker" class="panel">
+      <div class="card">
+        <h2>Today's calories</h2>
+        <p id="tracker-summary"></p>
+        <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+        <form id="tracker-form" class="inline-form">
+          <input type="text" id="log-name" placeholder="Meal name">
+          <input type="number" id="log-calories" placeholder="~kcal" min="1" max="5000">
+          <button type="submit" class="btn small">Log</button>
+        </form>
+        <div id="tracker-status" class="status" role="status" hidden></div>
+        <ul id="log-list" class="plain-list"></ul>
+      </div>
+    </section>
+
+    <!-- ===== CHAT ===== -->
+    <section id="chat" class="panel">
+      <div class="card">
+        <h2>Ask MealMap AI</h2>
+        <div id="chat-window" class="chat-window" aria-live="polite"></div>
+        <div class="chips">
+          <button class="chip" type="button">Swap dinner for something under 20 minutes</button>
+          <button class="chip" type="button">I have back-to-back meetings tomorrow, adjust my plan</button>
+          <button class="chip" type="button">Add paneer and capsicum to my grocery list</button>
+        </div>
+        <div id="chat-status" class="status" role="status" hidden></div>
+        <form id="chat-form" class="inline-form">
+          <input type="text" id="chat-input" placeholder="Ask about meals, groceries, calories…" autocomplete="off">
+          <button type="submit" id="chat-send" class="btn small">Send</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="disclaimer">
+    All calorie values are approximate. MealMap does not give medical or dietary advice.
+    Talk to a qualified professional for health needs.
+  </footer>
+
+  <!-- Order matters: helpers first, app.js last -->
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/grocery.js"></script>
+  <script src="js/tracker.js"></script>
+  <script src="js/planner.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
