@@ -1,88 +1,394 @@
 :root {
-  --green: #2f855a; --green-dark: #276749; --bg: #f6f8f5; --card: #ffffff;
-  --text: #22302a; --muted: #6b7a72; --danger: #c53030; --border: #e2e8e4;
+    /* ---------- Layer 1: base palette (the raw colours) ---------- */
+  --saffron: #F97316;
+  --saffron-deep: #C2570C;      /* dark enough for white text (good contrast) */
+  --saffron-darker: #A8480A;
+  --turmeric: #F59E0B;
+  --turmeric-light: #FACC15;
+  --turmeric-soft: #FEF3C7;
+  --chilli: #D62828;
+  --chilli-soft: #FDE2E2;
+  --chilli-ink: #8F1D1D;
+  --leaf: #2F8F4E;
+  --leaf-deep: #1F7A3E;
+  --leaf-soft: #DCF5E3;
+  --leaf-ink: #165C2E;
+  --brinjal: #7B3FA0;
+  --brinjal-soft: #EFE1F7;
+  --brinjal-ink: #5A2478;
+  --cream: #FFF8EC;
+  --cream-glass: rgba(255, 248, 236, 0.93);
+  --cream-dark: #F6E9D2;
+  --white: #FFFFFF;
+  --brown: #3B2A1E;            /* main text colour */
+  --brown-soft: #6F5B4B;       /* secondary text colour */
+  --line: #F0DFC4;             /* borders */
+  --focus: #2B59C3;            /* keyboard focus outline (blue stands out on warm colours) */
+
+  /* ---------- Layer 2: meaning-based names (what the colours are FOR) ---------- */
+  --bg: var(--cream);
+  --card-bg: var(--white);
+  --text: var(--brown);
+  --muted: var(--brown-soft);
+  --pattern-dot: rgba(245, 158, 11, 0.15);
+
+  --btn-from: var(--saffron-deep);
+  --btn-to: #B03A0E;
+  --btn-edge: #7A2A08;          /* darker bottom edge for the "press" effect */
+
+  --info-bg: var(--turmeric-soft);   --info-ink: var(--brown);          --info-line: var(--turmeric);
+  --success-bg: var(--leaf-soft);    --success-ink: var(--leaf-ink);    --success-line: var(--leaf);
+  --error-bg: var(--chilli-soft);    --error-ink: var(--chilli-ink);    --error-line: var(--chilli);
+
+  /* Meal-type colours: bar colour, badge background, badge text */
+  --breakfast: var(--turmeric);  --breakfast-soft: var(--turmeric-soft); --breakfast-ink: #8A5200;
+  --lunch: var(--leaf);          --lunch-soft: var(--leaf-soft);         --lunch-ink: var(--leaf-ink);
+  --snack: var(--chilli);        --snack-soft: var(--chilli-soft);       --snack-ink: var(--chilli-ink);
+  --dinner: var(--brinjal);      --dinner-soft: var(--brinjal-soft);     --dinner-ink: var(--brinjal-ink);
+
+  /* Calorie progress bar: colours go green -> yellow -> orange -> red along the track */
+  --track-empty: #EADBC2;
+  --bar-gradient: linear-gradient(90deg,
+      var(--leaf) 0%, var(--leaf) 55%, var(--turmeric) 75%, var(--saffron) 90%, var(--chilli) 100%);
+
+  /* Shape and shadow */
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 2px 8px rgba(120, 70, 20, 0.10);
+  --shadow-md: 0 8px 24px rgba(120, 70, 20, 0.16);
+  --ring: rgba(249, 115, 22, 0.30);
 }
+
 * { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-       background: var(--bg); color: var(--text); line-height: 1.5; }
-.site-header { text-align: center; padding: 20px 16px 8px; }
-.site-header h1 { margin: 0; color: var(--green-dark); }
-.site-header p { margin: 4px 0 0; color: var(--muted); }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  line-height: 1.55;
+  background-color: var(--bg);
+  /* soft dotted pattern, like a rangoli background */
+  background-image: radial-gradient(circle at 1px 1px, var(--pattern-dot) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* Clear outline for keyboard users */
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* ===================== Header ===================== */
+.site-header {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 30px 16px 36px;
+  color: var(--brown);          /* dark text on bright gradient = readable */
+  background: linear-gradient(120deg, var(--saffron) 0%, var(--turmeric) 55%, var(--turmeric-light) 100%);
+  border-radius: 0 0 28px 28px;
+  box-shadow: var(--shadow-md);
+}
+/* decorative "toran" stripe along the bottom edge */
+.site-header::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0; height: 6px;
+  background: repeating-linear-gradient(90deg,
+      var(--chilli) 0 24px, var(--leaf) 24px 48px, var(--white) 48px 72px);
+}
+.site-header h1 {
+  position: relative;
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 2.9rem);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+.site-header p { position: relative; margin: 6px 0 0; font-weight: 600; font-size: 1.05rem; }
+
+/* floating food emoji in the header corners (decoration only) */
+.header-deco span { position: absolute; font-size: 2.2rem; animation: float 6s ease-in-out infinite; }
+.header-deco span:nth-child(1) { left: 6%;  top: 18%; }
+.header-deco span:nth-child(2) { right: 7%; top: 22%; animation-delay: 1s; }
+.header-deco span:nth-child(3) { left: 16%; bottom: 14%; animation-delay: 2s; font-size: 1.6rem; }
+.header-deco span:nth-child(4) { right: 17%; bottom: 16%; animation-delay: 3s; font-size: 1.6rem; }
 
 /* Tabs */
-.tabs { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto;
-        justify-content: center; position: sticky; top: 0; background: var(--bg); z-index: 5; }
-.tab { border: 1px solid var(--border); background: var(--card); padding: 8px 18px;
-       border-radius: 999px; cursor: pointer; font-size: 1rem; }
-.tab.active { background: var(--green); color: #fff; border-color: var(--green); }
+.tabs {
+  display: flex; gap: 8px; justify-content: center;
+  padding: 14px 16px; overflow-x: auto;
+  position: sticky; top: 0; z-index: 5;
+  background: var(--cream-glass);
+  backdrop-filter: blur(6px);
+}
+.tab {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 18px;
+  font: inherit; font-weight: 700; color: var(--text);
+  background: var(--card-bg);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.tab-icon { font-size: 1.2rem; }
+.tab:hover { transform: translateY(-2px); background: var(--turmeric-soft); border-color: var(--turmeric); box-shadow: var(--shadow-sm); }
+.tab.active {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--btn-from), var(--btn-to));
+  border-color: var(--btn-to);
+  box-shadow: var(--shadow-sm);
+}
 
-main { max-width: 760px; margin: 0 auto; padding: 0 16px 24px; }
+/* ===================== Layout and panels ===================== */
+main { max-width: 760px; margin: 0 auto; padding: 4px 16px 24px; }
 .panel { display: none; }
-.panel.active { display: block; }
-.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-        padding: 16px; margin-bottom: 14px; }
-.card h2, .card h3 { margin-top: 0; }
+.panel.active { display: block; animation: panelIn .35s ease both; }   /* smooth tab change */
+
+/* ===================== Cards ===================== */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.card h2 { margin-top: 0; color: var(--saffron-deep); }
+.card h3 { margin-top: 0; }
 
 /* Forms */
-label { display: block; margin-bottom: 12px; font-weight: 600; }
-input, select { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid var(--border);
-                border-radius: 8px; font-size: 1rem; }
+label { display: block; margin-bottom: 14px; font-weight: 700; }
+input, select {
+  width: 100%; margin-top: 5px; padding: 11px 12px;
+  font: inherit; color: var(--text); background: var(--white);
+  border: 2px solid var(--line); border-radius: var(--radius-sm);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+input:hover, select:hover { border-color: var(--turmeric); }
+input:focus, select:focus { border-color: var(--saffron); box-shadow: 0 0 0 4px var(--ring); }
+input::placeholder { color: #9A8573; }
+input[type="checkbox"] { accent-color: var(--leaf); }
+
 .inline-form { display: flex; gap: 8px; margin-bottom: 10px; }
 .inline-form input, .inline-form select { margin-top: 0; }
-.btn { background: var(--green); color: #fff; border: 0; padding: 10px 18px;
-       border-radius: 8px; font-size: 1rem; cursor: pointer; }
-.btn:hover { background: var(--green-dark); }
-.btn:disabled { opacity: .6; cursor: not-allowed; }
-.btn.small { padding: 8px 14px; white-space: nowrap; }
-.btn.secondary { background: #edf2ee; color: var(--text); }
-.icon-btn { background: none; border: 0; color: var(--danger); cursor: pointer; font-size: 1.1rem; }
+
+/* On wide screens the planner form uses two columns */
+@media (min-width: 640px) {
+  #plan-form { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; }
+  #plan-form h2, #plan-form .muted, #plan-form .btn { grid-column: 1 / -1; }
+}
+
+.btn {
+  font: inherit; font-weight: 700; color: var(--white);
+  padding: 11px 20px;
+  background: linear-gradient(135deg, var(--btn-from), var(--btn-to));
+  border: 0; border-radius: 999px;
+  box-shadow: 0 3px 0 var(--btn-edge);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, filter .2s ease;
+}
+.btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--btn-edge); }   /* subtle press effect */
+.btn:disabled { opacity: .6; cursor: not-allowed; transform: none; filter: none; }
+.btn.small { padding: 9px 16px; white-space: nowrap; }
+.btn.secondary { color: var(--text); background: var(--cream-dark); box-shadow: 0 3px 0 #D9C7A4; }
+.btn.secondary:active { box-shadow: 0 1px 0 #D9C7A4; }
+#plan-button { width: 100%; font-size: 1.05rem; padding: 13px; }
+
+.icon-btn {
+  width: 32px; height: 32px; flex-shrink: 0;
+  font-size: 1rem; color: var(--chilli);
+  background: none; border: 0; border-radius: 50%;
+  cursor: pointer; transition: background .2s ease, transform .12s ease;
+}
+.icon-btn:hover { background: var(--chilli-soft); }
+.icon-btn:active { transform: scale(.88); }
 
 /* Status messages */
-.status { padding: 10px 12px; border-radius: 8px; margin: 10px 0; background: #ebf4ff; }
-.status.error { background: #fed7d7; color: #742a2a; }
-.status.success { background: #c6f6d5; color: #22543d; }
+.status {
+  margin: 12px 0; padding: 11px 14px;
+  background: var(--info-bg); color: var(--info-ink);
+  border-left: 5px solid var(--info-line); border-radius: var(--radius-sm);
+  animation: panelIn .3s ease both;
+}
+.status.error { background: var(--error-bg); color: var(--error-ink); border-left-color: var(--error-line); }
+.status.success { background: var(--success-bg); color: var(--success-ink); border-left-color: var(--success-line); }
 .status[hidden] { display: none; }
-.muted, .empty { color: var(--muted); }
+
+.muted { color: var(--muted); }
+
+/* ===================== Empty states ===================== */
+.empty {
+  text-align: center; padding: 22px 16px;
+  color: var(--muted);
+  background: var(--turmeric-soft);
+  border: 2px dashed var(--turmeric); border-radius: var(--radius);
+}
+.empty::before { display: block; margin-bottom: 6px; font-size: 2.4rem; }   /* emoji is set per section below */
+#plan-result .empty::before { content: "🍳"; }
+#pantry-list .empty::before { content: "🥫"; }
+#log-list .empty::before { content: "📝"; }
+.plain-list li.empty { display: block; border-bottom: 2px dashed var(--turmeric); }
+/* The grocery list is an empty <div> when there are no items, so :empty can show an emoji */
+#grocery-list:empty { padding: 6px 0 14px; text-align: center; }
+#grocery-list:empty::before { content: "🛒"; font-size: 2.6rem; }
 
 /* Meal cards */
-.meal-type { background: #c6f6d5; color: #22543d; border-radius: 999px;
-             padding: 2px 10px; font-size: .8rem; font-weight: 700; }
-.meal-card h3 { margin: 8px 0 4px; }
-.meal-meta { color: var(--muted); margin: 0 0 6px; }
-.meal-ingredients { font-size: .95rem; }
-.plan-total, .tip { font-weight: 600; }
-/* NEW: meals that use pantry items get a green edge and a small note */
-.meal-card.uses-pantry { border-left: 4px solid var(--green); }
-.pantry-note { color: var(--green-dark); font-size: .9rem; font-weight: 600; margin: 4px 0 8px; }
+.plan-total {
+  display: inline-block; margin: 4px 0 14px; padding: 7px 16px;
+  font-weight: 700; color: var(--brown);
+  background: var(--turmeric-soft); border: 2px solid var(--turmeric); border-radius: 999px;
+}
+.meal-card {
+  --accent: var(--breakfast); --accent-soft: var(--breakfast-soft); --accent-ink: var(--breakfast-ink);
+  border-top: 6px solid var(--accent);
+  animation: cardIn .45s ease both;            /* fade-in */
+}
+/* The plan always has 4 meals in order, so the 1st..4th card get their own colour */
+#plan-result .meal-card:nth-of-type(1) { --accent: var(--breakfast); --accent-soft: var(--breakfast-soft); --accent-ink: var(--breakfast-ink); }
+#plan-result .meal-card:nth-of-type(2) { --accent: var(--lunch);     --accent-soft: var(--lunch-soft);     --accent-ink: var(--lunch-ink);     animation-delay: .08s; }
+#plan-result .meal-card:nth-of-type(3) { --accent: var(--snack);     --accent-soft: var(--snack-soft);     --accent-ink: var(--snack-ink);     animation-delay: .16s; }
+#plan-result .meal-card:nth-of-type(4) { --accent: var(--dinner);    --accent-soft: var(--dinner-soft);    --accent-ink: var(--dinner-ink);    animation-delay: .24s; }
 
-/* Grocery + tracker + pantry lists */
+.meal-type {
+  display: inline-block; padding: 3px 12px;
+  font-size: .85rem; font-weight: 800; letter-spacing: .3px;
+  color: var(--accent-ink); background: var(--accent-soft);
+  border: 1px solid var(--accent); border-radius: 999px;
+}
+#plan-result .meal-card:nth-of-type(1) .meal-type::before { content: "🌅 "; }
+#plan-result .meal-card:nth-of-type(2) .meal-type::before { content: "🍛 "; }
+#plan-result .meal-card:nth-of-type(3) .meal-type::before { content: "🍪 "; }
+#plan-result .meal-card:nth-of-type(4) .meal-type::before { content: "🌙 "; }
+
+.meal-card h3 { margin: 10px 0 4px; font-size: 1.2rem; }
+.meal-meta { margin: 0 0 6px; color: var(--muted); font-weight: 600; }
+.meal-ingredients { margin: 0 0 10px; font-size: .95rem; }
+
+/* Pantry highlight: green edge + soft green tint + a pill label */
+.meal-card.uses-pantry {
+  background: linear-gradient(90deg, var(--leaf-soft), var(--white) 50%);
+  box-shadow: var(--shadow-sm), inset 6px 0 0 var(--leaf);
+}
+.pantry-note {
+  display: inline-block; margin: 0 0 10px; padding: 3px 12px;
+  font-size: .9rem; font-weight: 700; color: var(--leaf-ink);
+  background: var(--leaf-soft); border: 1px solid var(--leaf); border-radius: 999px;
+}
+
+.tip {
+  margin-top: 6px; padding: 12px 14px; font-weight: 600;
+  background: var(--turmeric-soft); border-left: 5px solid var(--turmeric); border-radius: var(--radius-sm);
+}
+
+/* ===================== Lists (pantry, tracker, grocery) ===================== */
 .plain-list { list-style: none; padding: 0; margin: 0; }
-.grocery-row, .plain-list li { display: flex; justify-content: space-between;
-        align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); }
-.grocery-row label { margin: 0; font-weight: 400; display: flex; gap: 8px; align-items: center; }
-.grocery-row input { width: auto; margin: 0; }
-.bought { text-decoration: line-through; color: var(--muted); }
-.progress { height: 16px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin: 8px 0 14px; }
-.progress-bar { height: 100%; width: 0; background: var(--green); transition: width .3s; }
-.progress-bar.over { background: var(--danger); }
+.plain-list li, .grocery-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 4px; border-bottom: 1px solid var(--line);
+}
+.grocery-row { border-radius: 8px; transition: background .2s ease; }
+.grocery-row:hover { background: var(--turmeric-soft); }
+.grocery-row label { display: flex; align-items: center; gap: 10px; margin: 0; font-weight: 400; }
+.grocery-row input { width: 20px; height: 20px; margin: 0; }
+.bought { color: var(--muted); text-decoration: line-through; }
 
-/* Chat */
-.chat-window { height: 45vh; overflow-y: auto; border: 1px solid var(--border);
-               border-radius: 8px; padding: 10px; margin-bottom: 10px; background: #fafcfa; }
-.bubble { max-width: 85%; padding: 8px 12px; border-radius: 12px; margin: 6px 0; white-space: pre-wrap; }
-.bubble.user { background: var(--green); color: #fff; margin-left: auto; }
-.bubble.bot { background: #edf2ee; }
-.bubble.typing { font-style: italic; color: var(--muted); }
-.bubble.error { background: #fed7d7; color: #742a2a; }
-.bubble.system { background: none; color: var(--muted); font-size: .85rem; text-align: center; max-width: 100%; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-.chip { border: 1px solid var(--green); background: #fff; color: var(--green-dark);
-        border-radius: 999px; padding: 4px 12px; font-size: .85rem; cursor: pointer; }
+#grocery-list h3 {
+  margin: 16px 0 4px; padding-left: 10px;
+  font-size: .9rem; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--saffron-deep); border-left: 5px solid var(--turmeric);
+}
 
-.disclaimer { text-align: center; font-size: .85rem; color: var(--muted);
-              padding: 16px; max-width: 760px; margin: 0 auto; }
+/* ===================== Tracker progress bar ===================== */
+#tracker-summary { font-size: 1.05rem; font-weight: 600; }
 
-@media (max-width: 480px) {
+/* The colours are painted on the TRACK. The bar is a "window": it is transparent
+   and its huge box-shadow covers the empty part, so only the filled part shows
+   its colours. A short bar shows green; a longer one reveals yellow, orange, red. */
+.progress { height: 22px; margin: 8px 0 16px; overflow: hidden; border-radius: 999px; background: var(--bar-gradient); }
+.progress-bar {
+  height: 100%; width: 0;
+  background: transparent;
+  box-shadow: 0 0 0 100vmax var(--track-empty);
+  transition: width .5s ease;
+}
+/* tracker.js adds .over when the total passes the goal: solid red with stripes */
+.progress-bar.over {
+  background: repeating-linear-gradient(45deg, rgba(255, 255, 255, .28) 0 8px, transparent 8px 16px),
+              linear-gradient(var(--chilli), var(--chilli));
+}
+
+/* ===================== Chat ===================== */
+.chat-window {
+  height: 48vh; min-height: 260px; overflow-y: auto;
+  margin-bottom: 12px; padding: 12px;
+  background-color: #FFFBF3;
+  background-image: radial-gradient(circle at 1px 1px, var(--pattern-dot) 1px, transparent 0);
+  background-size: 18px 18px;
+  border: 2px solid var(--line); border-radius: var(--radius);
+}
+.bubble {
+  max-width: 85%; margin: 8px 0; padding: 10px 14px;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+  border-radius: 18px; animation: cardIn .3s ease both;
+}
+.bubble.bot { background: var(--white); border: 1px solid var(--line); border-bottom-left-radius: 4px; box-shadow: var(--shadow-sm); }
+.bubble.user {
+  margin-left: auto; color: var(--white);
+  background: linear-gradient(135deg, var(--btn-from), var(--btn-to));
+  border-bottom-right-radius: 4px;
+}
+/* "Thinking…" state: pulsing bubble with a little spinner */
+.bubble.typing { color: var(--muted); font-style: italic; animation: pulse 1.2s ease-in-out infinite; }
+.bubble.typing::before {
+  content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 8px; vertical-align: -1px;
+  border: 2px solid var(--turmeric); border-top-color: transparent; border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+.bubble.error { color: var(--error-ink); background: var(--error-bg); border-color: var(--error-line); }
+.bubble.system {
+  max-width: 100%; margin: 6px auto; padding: 2px 8px;
+  text-align: center; font-size: .85rem; color: var(--muted);
+  background: none; border: 0; box-shadow: none;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip {
+  padding: 6px 14px; font: inherit; font-size: .88rem; font-weight: 600; color: var(--text);
+  background: var(--white); border: 2px solid var(--turmeric); border-radius: 999px;
+  cursor: pointer; transition: transform .15s ease, background .2s ease;
+}
+.chip:hover { background: var(--turmeric-soft); transform: translateY(-2px); }
+.chip:active { transform: scale(.96); }
+
+/* ===================== Footer ===================== */
+.disclaimer {
+  width: calc(100% - 32px); max-width: 760px; margin: 12px auto 28px; padding: 16px 20px;
+  text-align: center; font-size: .95rem; line-height: 1.6;
+  color: var(--cream); background: var(--brown); border-radius: var(--radius);
+}
+.disclaimer strong { color: var(--turmeric-light); }
+
+/* ===================== Animations ===================== */
+@keyframes panelIn { from { opacity: 0; transform: translateY(8px); }  to { opacity: 1; transform: none; } }
+@keyframes cardIn  { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes float   { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-8px) rotate(4deg); } }
+@keyframes pulse   { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+@keyframes spin    { to { transform: rotate(360deg); } }
+
+/* Users who ask their system for less motion get no animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ===================== Small screens ===================== */
+@media (max-width: 520px) {
+  .site-header { padding: 24px 12px 30px; }
+  .header-deco span { font-size: 1.5rem; }
+  .header-deco span:nth-child(3), .header-deco span:nth-child(4) { display: none; }
+
+  /* 5 tabs share the width; icon on top, label underneath */
+  .tabs { gap: 4px; padding: 10px 8px; }
+  .tab { flex: 1; min-width: 0; flex-direction: column; gap: 2px; padding: 7px 2px; font-size: .74rem; }
+
   .inline-form { flex-wrap: wrap; }
   .inline-form input { flex: 1 1 100%; }
+  .bubble { max-width: 92%; }
 }

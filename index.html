@@ -3,22 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F97316">
   <title>MealMap – Smart Meal Planner</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Header: gradient background + floating food emoji (decoration only, hidden from screen readers) -->
   <header class="site-header">
+    <div class="header-deco" aria-hidden="true">
+      <span>🌶️</span><span>🍛</span><span>🥭</span><span>🫓</span>
+    </div>
     <h1>🍽️ MealMap</h1>
     <p>Plan meals around your workday, shop smarter, track calories.</p>
   </header>
 
-  <!-- Navigation: each button shows one section (see app.js) -->
+  <!-- Navigation: each button shows one section (see app.js). Icon + label on every tab. -->
   <nav class="tabs" aria-label="Main navigation">
-    <button class="tab active" data-target="planner">Planner</button>
-    <button class="tab" data-target="pantry">Pantry</button>
-    <button class="tab" data-target="grocery">Grocery</button>
-    <button class="tab" data-target="tracker">Tracker</button>
-    <button class="tab" data-target="chat">Chat</button>
+    <button class="tab active" data-target="planner"><span class="tab-icon" aria-hidden="true">🍳</span><span class="tab-label">Planner</span></button>
+    <button class="tab" data-target="pantry"><span class="tab-icon" aria-hidden="true">🥫</span><span class="tab-label">Pantry</span></button>
+    <button class="tab" data-target="grocery"><span class="tab-icon" aria-hidden="true">🛒</span><span class="tab-label">Grocery</span></button>
+    <button class="tab" data-target="tracker"><span class="tab-icon" aria-hidden="true">📊</span><span class="tab-label">Tracker</span></button>
+    <button class="tab" data-target="chat"><span class="tab-icon" aria-hidden="true">💬</span><span class="tab-label">Chat</span></button>
   </nav>
 
   <main>
@@ -128,8 +133,9 @@
   </main>
 
   <footer class="disclaimer">
-    All calorie values are approximate. MealMap does not give medical or dietary advice.
-    Talk to a qualified professional for health needs.
+    <p><strong>Please note:</strong> all calorie values are approximate. MealMap does not give medical or dietary advice.
+    Talk to a qualified professional for health needs.</p>
+    <p>🍛 Made for busy people who deserve a proper meal.</p>
   </footer>
 
   <!-- Order matters: helpers first, pantry before grocery/planner (they call pantryHas), app.js last -->
