@@ -32,11 +32,19 @@ function httpError(status, message) {
 }
 
 // Clean and validate whatever the AI returned, so the frontend can trust it
+const MEAL_ORDER = ["Breakfast", "Lunch", "Snack", "Dinner"];
+
 function cleanPlan(plan) {
-  if (!plan || !Array.isArray(plan.meals) || plan.meals.length === 0) return null;
-  const meals = plan.meals.slice(0, 6).map(function (m) {
+  if (!plan || !Array.isArray(plan.meals)) return null;
+  // Accept the plan only if it has exactly 4 meals in the expected order
+  if (plan.meals.length !== MEAL_ORDER.length) return null;
+  for (let i = 0; i < MEAL_ORDER.length; i++) {
+    const type = String((plan.meals[i] && plan.meals[i].type) || "").trim().toLowerCase();
+    if (type !== MEAL_ORDER[i].toLowerCase()) return null;
+  }
+  const meals = plan.meals.map(function (m, i) {
     return {
-      type: String(m.type || "Meal").slice(0, 30),
+      type: MEAL_ORDER[i],
       name: String(m.name || "Meal").slice(0, 100),
       prepMinutes: Math.max(0, Math.round(Number(m.prepMinutes) || 0)),
       calories: Math.max(0, Math.round(Number(m.calories) || 0)),
