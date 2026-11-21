@@ -11,6 +11,7 @@ function showTab(targetId) {
 tabButtons.forEach(btn => btn.addEventListener("click", () => showTab(btn.dataset.target)));
 
 // Draw everything that was saved in localStorage
+renderPantry();   // NEW (first, so the planner can check the pantry)
 renderPlan();
 renderGrocery();
 renderTracker();

@@ -5,7 +5,9 @@ const KEYS = {
   plan: "mealmap_plan",
   grocery: "mealmap_grocery",
   log: "mealmap_log",
-  goal: "mealmap_goal"
+  goal: "mealmap_goal",
+  pantry: "mealmap_pantry",     // NEW: items the user already has
+  cuisine: "mealmap_cuisine"    // NEW: last chosen cuisine
 };
 
 // Read JSON from localStorage. If anything goes wrong, return the fallback.

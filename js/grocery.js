@@ -34,12 +34,32 @@ function addGroceryItems(items, source) {
   renderGrocery();
 }
 
-// Rebuild the plan-based items from a new meal plan (manual items are kept).
-function syncGroceryFromPlan(plan) {
+// Rebuild the plan-based items from a meal plan (manual and chat items are kept).
+// CHANGED: ingredients the user already has in the pantry are left out.
+// keepTicks = true when we only re-sync because the pantry changed,
+// so items the user already ticked as bought stay ticked.
+function syncGroceryFromPlan(plan, keepTicks) {
+  const tickedNames = groceryItems
+    .filter(i => i.source === "plan" && i.bought)
+    .map(i => i.name.toLowerCase());
+
   groceryItems = groceryItems.filter(i => i.source !== "plan");
+
   const ingredients = [];
-  plan.meals.forEach(meal => meal.ingredients.forEach(ing => ingredients.push(ing)));
+  plan.meals.forEach(function (meal) {
+    meal.ingredients.forEach(function (ing) {
+      if (!pantryHas(ing.name)) ingredients.push(ing);   // skip what is already at home
+    });
+  });
   addGroceryItems(ingredients, "plan");
+
+  if (keepTicks) {
+    groceryItems.forEach(function (item) {
+      if (item.source === "plan" && tickedNames.includes(item.name.toLowerCase())) item.bought = true;
+    });
+    saveData(KEYS.grocery, groceryItems);
+    renderGrocery();
+  }
 }
 
 function renderGrocery() {

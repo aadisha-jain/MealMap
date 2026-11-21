@@ -15,6 +15,7 @@
   <!-- Navigation: each button shows one section (see app.js) -->
   <nav class="tabs" aria-label="Main navigation">
     <button class="tab active" data-target="planner">Planner</button>
+    <button class="tab" data-target="pantry">Pantry</button>
     <button class="tab" data-target="grocery">Grocery</button>
     <button class="tab" data-target="tracker">Tracker</button>
     <button class="tab" data-target="chat">Chat</button>
@@ -39,16 +40,39 @@
             <option value="eggetarian">Eggetarian</option>
           </select>
         </label>
+        <label>Cuisine
+          <select id="cuisine">
+            <option value="Indian" selected>Indian</option>
+            <option value="Mixed">Mixed</option>
+            <option value="International">International</option>
+          </select>
+        </label>
         <label>Time available per meal (minutes)
           <input type="number" id="minutes-per-meal" value="20" min="5" max="120">
         </label>
         <label>Daily calorie goal (approx. kcal)
           <input type="number" id="calorie-goal" value="2000" min="1000" max="5000">
         </label>
+        <p id="pantry-hint" class="muted"></p>
         <button type="submit" id="plan-button" class="btn">Generate plan</button>
       </form>
       <div id="plan-status" class="status" role="status" hidden></div>
       <div id="plan-result"></div>
+    </section>
+
+    <!-- ===== PANTRY ===== -->
+    <section id="pantry" class="panel">
+      <div class="card">
+        <h2>What I already have at home</h2>
+        <p class="muted">The AI will prefer dishes that use these, and they will not be added to your grocery list.</p>
+        <form id="pantry-form" class="inline-form">
+          <input type="text" id="pantry-name" placeholder="e.g. Rice, Onion, Besan">
+          <button type="submit" class="btn small">Add</button>
+        </form>
+        <div id="pantry-status" class="status" role="status" hidden></div>
+        <p id="pantry-count" class="muted"></p>
+        <ul id="pantry-list" class="plain-list"></ul>
+      </div>
     </section>
 
     <!-- ===== GROCERY ===== -->
@@ -92,6 +116,7 @@
           <button class="chip" type="button">Swap dinner for something under 20 minutes</button>
           <button class="chip" type="button">I have back-to-back meetings tomorrow, adjust my plan</button>
           <button class="chip" type="button">Add paneer and capsicum to my grocery list</button>
+          <button class="chip" type="button">Swap lunch for something using what I have at home</button>
         </div>
         <div id="chat-status" class="status" role="status" hidden></div>
         <form id="chat-form" class="inline-form">
@@ -107,9 +132,10 @@
     Talk to a qualified professional for health needs.
   </footer>
 
-  <!-- Order matters: helpers first, app.js last -->
+  <!-- Order matters: helpers first, pantry before grocery/planner (they call pantryHas), app.js last -->
   <script src="js/utils.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/pantry.js"></script>
   <script src="js/grocery.js"></script>
   <script src="js/tracker.js"></script>
   <script src="js/planner.js"></script>

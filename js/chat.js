@@ -54,12 +54,21 @@ async function sendMessage(rawText) {
       message: text,
       history: chatHistory.slice(-6),               // last 6 messages only
       plan: currentPlan,
-      grocery: groceryItems.map(item => item.name)
+      grocery: groceryItems.map(item => item.name),
+      cuisine: loadData(KEYS.cuisine, "Indian"),    // NEW
+      pantry: getPantryNames()                      // NEW
     });
 
     typingBubble.remove();
-    addBubble("bot", data.reply);
     chatHistory.push({ role: "user", text: text }, { role: "bot", text: data.reply });
+
+    // NEW: the server says the AI's new plan was not valid, so show a warning-style bubble
+    if (data.planFailed) {
+      addBubble("bot error", "⚠️ " + data.reply);
+      return;   // the finally block below still runs
+    }
+
+    addBubble("bot", data.reply);
 
     if (data.updatedPlan) {
       applyNewPlan(data.updatedPlan);
