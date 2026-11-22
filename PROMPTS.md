@@ -90,7 +90,7 @@ Find 3 to 4 credible facts or studies, ideally covering India, about:
 For each one, give the key finding in one sentence and the source link.
 Keep the answer short.
 ```
-**Result:** four findings with source links. I opened the links and checked the numbers myself before using them in the README. [Add anything you changed or dropped.]
+**Result:** four findings with source links. I opened the links and checked the numbers myself before using them in the README.
 
 ## 6. Prompt Improvement Example
 **Before:** Gemini's suggestion was to rename each meal by its position, which would give wrong labels if the AI returned meals in a different order.
